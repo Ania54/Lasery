@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
+	public float n = 1.52f;
 
 	bool Refract(Vector3 incident, Vector3 normal, float n1, float n2, out Vector3 refracted)
 	{
@@ -47,6 +48,9 @@ public class Laser : MonoBehaviour
 
 			// 1) find which collider you’re in
 			Collider[] overlaps = Physics.OverlapSphere(ray.origin, 0.1f);
+
+			// Find the first collider that overlaps with the ray and has the "Glass" tag
+			// This is the collider that the ray is currently inside
 			Collider inside = overlaps.FirstOrDefault(c => c.CompareTag("Glass"));
 
 			RaycastHit hit;
@@ -75,23 +79,7 @@ public class Laser : MonoBehaviour
 					}
 					else if (hit.collider.CompareTag("Glass"))
 					{
-						float n1 = currentRefractiveIndex;
-						float n2 = isInsideMaterial ? 1.0f : 1.5f; // Air to glass or glass to air
-
-						Vector3 refractedDir;
-						if (Refract(direction, hit.normal, n1, n2, out refractedDir))
-						{
-							direction = refractedDir;
-							origin = hit.point + direction * 0.01f;
-							isInsideMaterial = !isInsideMaterial;
-							currentRefractiveIndex = n2;
-						}
-						else
-						{
-							// Total internal reflection
-							direction = Vector3.Reflect(direction, hit.normal);
-							origin = hit.point + direction * 0.01f;
-						}
+						Debug.Log("hit glass");
 					}
 
 					else
