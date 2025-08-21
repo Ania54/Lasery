@@ -2397,6 +2397,7 @@ GameObject:
   - component: {fileID: 715909534}
   - component: {fileID: 715909533}
   - component: {fileID: 715909532}
+  - component: {fileID: 715909536}
   m_Layer: 0
   m_Name: Soczewka
   m_TagString: Glass
@@ -2419,7 +2420,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -2493,6 +2494,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &715909536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715909531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a3cba045cef1292ebf8e73a45c75ed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RefrIndex: 1.52
 --- !u!1 &732409302
 GameObject:
   m_ObjectHideFlags: 0
@@ -4055,7 +4069,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 435b340bee74a3b2b8ccdaa7e0d13ff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  n: 1.52
   lineRenderer: {fileID: 2087072154}
 --- !u!120 &2087072154
 LineRenderer:

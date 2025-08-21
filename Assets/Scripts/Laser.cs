@@ -3,32 +3,9 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
-	public float n = 1.52f;
-
-	bool Refract(Vector3 incident, Vector3 normal, float n1, float n2, out Vector3 refracted)
-	{
-		float ratio = n1 / n2;
-		float cosI = -Vector3.Dot(normal, incident);
-		float sinT2 = ratio * ratio * (1 - cosI * cosI);
-
-		if (sinT2 > 1f)
-		{
-			refracted = Vector3.zero;
-			return false; // Total internal reflection
-		}
-
-		float cosT = Mathf.Sqrt(1 - sinT2);
-		refracted = ratio * incident + (ratio * cosI - cosT) * normal;
-		refracted.Normalize();
-		return true;
-	}
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	public LineRenderer lineRenderer;
-	void Start()
-	{
-
-	}
 
 	// Update is called once per frame
 	void Update()
@@ -55,47 +32,33 @@ public class Laser : MonoBehaviour
 
 			RaycastHit hit;
 
-			if (inside != null)
+			if (Physics.Raycast(ray, out hit))
 			{
-				if (inside.Raycast(ray, out hit, 100f))
+				//Debug.Log(hit.ToString());
+				lineRenderer.positionCount++;
+				lineRenderer.SetPosition(lineRenderer.positionCount - 1, hit.point);
+
+				if (hit.collider.CompareTag("Mirror"))
 				{
-					Debug.Log("Leaving collider at " + hit.point);
+					//Debug.Log("aa");
+					direction = Vector3.Reflect(direction, hit.normal);
+					origin = hit.point + direction * 0.01f;
 				}
-			}
-			else
-			{
-
-				if (Physics.Raycast(ray, out hit))
+				else if (hit.collider.tag != inside.tag)
 				{
-					//Debug.Log(hit.ToString());
-					lineRenderer.positionCount++;
-					lineRenderer.SetPosition(lineRenderer.positionCount - 1, hit.point);
-
-					if (hit.collider.CompareTag("Mirror"))
-					{
-						//Debug.Log("aa");
-						direction = Vector3.Reflect(direction, hit.normal);
-						origin = hit.point + direction * 0.01f;
-					}
-					else if (hit.collider.CompareTag("Glass"))
-					{
-						Debug.Log("hit glass");
-					}
-
-					else
-					{
-						break;
-					}
-
+					Debug.Log("refract");
 				}
 				else
 				{
-					lineRenderer.positionCount++;
-					lineRenderer.SetPosition(lineRenderer.positionCount - 1, origin + direction * 100f);
+					break;
 				}
+
+			}
+			else
+			{
+				lineRenderer.positionCount++;
+				lineRenderer.SetPosition(lineRenderer.positionCount - 1, origin + direction * 100f);
 			}
 		}
 	}
 }
-
-
